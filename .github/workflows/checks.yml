@@ -1,0 +1,38 @@
+name: Platform checks
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+
+jobs:
+  web-and-android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Web tests
+        run: npm test
+      - name: Android compile and JVM tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          jar=$(find "${ANDROID_HOME:?}/platforms" -name android.jar | sort -V | tail -1)
+          test -f "$jar"
+          mkdir -p build/android
+          javac -cp "$jar" -d build/android $(find native/android/src/main/java native/android/tests -name '*.java')
+          java -cp build/android com.bugpostcard.android.CoreTest
+  ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Swift tests
+        working-directory: native/ios
+        run: swift test
+      - name: Build iOS library and review screen
+        working-directory: native/ios
+        run: xcodebuild -scheme BugPostcard -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Turn a failed app session into a local, reviewable bug report.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' blob: data:; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>BugPostcard · A better way to report bugs</title>
+  <link rel="stylesheet" href="./demo/site.css">
+  <link rel="stylesheet" href="./lib/editor.css">
+  <script type="module" src="./demo/app.js"></script>
+</head>
+<body>
+  <header class="bar">
+    <a class="brand" href="./"><span aria-hidden="true">B</span> BugPostcard</a>
+    <a href="https://github.com/GRS7-K/bugpostcard">View source ↗</a>
+  </header>
+  <main class="layout">
+    <div class="intro">
+      <p class="kicker"><span></span> OPEN SOURCE · LOCAL FIRST</p>
+      <h1>Send the bug.<br><em>Keep the context.</em></h1>
+      <p>Turn a failed action into a shareable report with the steps, environment and evidence a developer needs to investigate.</p>
+      <a class="primary" href="#playground">Try the demo <span aria-hidden="true">↓</span></a>
+    </div>
+    <section id="playground" class="playground" aria-labelledby="demo-title">
+      <header class="card-top">
+        <div><p class="kicker">INTERACTIVE DEMO</p><h2 id="demo-title">Camera settings</h2></div>
+        <span class="pill" id="recorder-state">Capture off</span>
+      </header>
+      <p>This mock settings screen simulates a permission change and an HTTP 503. It does not use your camera.</p>
+      <label class="toggle"><input id="capture" type="checkbox"> Record diagnostics for this session</label>
+      <div class="scenario">
+        <button type="button" id="permission" data-bugpostcard-action="Allow camera access">1. Allow camera</button>
+        <button type="button" id="save" data-bugpostcard-action="Save settings" disabled>2. Save settings</button>
+        <p id="scenario-status" role="status" aria-live="polite">Camera access is disabled.</p>
+      </div>
+      <div class="card-actions">
+        <button class="primary" type="button" id="report">Review report</button>
+        <label class="import">Import report JSON<input id="import-report" type="file" accept=".json,application/json"></label>
+      </div>
+      <p class="feedback" id="import-status" role="status" aria-live="polite"></p>
+    </section>
+    <section class="steps" aria-label="How it works">
+      <div><span>01</span><h3>Capture</h3><p>Collect recent app events after a user turns diagnostics on.</p></div>
+      <div><span>02</span><h3>Review</h3><p>Read, remove and add evidence before creating the report.</p></div>
+      <div><span>03</span><h3>Share</h3><p>Save offline HTML or JSON, or copy the text for a GitHub issue.</p></div>
+    </section>
+  </main>
+  <footer class="foot">Web · Android · iOS source integrations</footer>
+</body>
+</html>
